@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "tradingview": {
+      "command": "node",
+      "args": [
+        "src/server.js"
+      ],
+      "enabled": true,
+      "startup_timeout_sec": 30,
+      "note": "Requires TradingView Desktop to be launched with --remote-debugging-port=9222."
+    }
+  }
+}

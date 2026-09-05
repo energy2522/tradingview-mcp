@@ -1,6 +1,6 @@
-# Setup Guide for Claude Code
+# Setup Guide for Codex and Claude Code
 
-This file is a step-by-step guide for Claude Code (or any LLM agent) to install and configure the TradingView MCP server. If a user asks you to install or set up this project, follow these steps exactly.
+This file is a step-by-step guide for Codex, Claude Code, or another MCP client to install and configure the TradingView MCP server.
 
 ## Step 1: Clone and Install
 
@@ -12,7 +12,16 @@ npm install
 
 If the user specifies a different install path, use that instead of `~/tradingview-mcp`.
 
-## Step 2: Add to MCP Config
+## Step 2: Add to your MCP client
+
+### Codex
+
+The repository ships as a local Codex plugin. Install the repository as a local
+plugin, enable **TradingView**, and let the plugin's `.mcp.json` start
+`node src/server.js`. The plugin also makes the workflows in `skills/`
+available to Codex.
+
+### Claude Code
 
 Add the server to the user's Claude Code MCP configuration. The config file is at `~/.claude/.mcp.json` (global) or `.mcp.json` (project-level).
 
@@ -76,12 +85,13 @@ Linux:
 # or: tradingview --remote-debugging-port=9222
 ```
 
-## Step 4: Restart Claude Code
+## Step 4: Restart your client
 
-The MCP server only loads when Claude Code starts. After adding the config:
+The MCP server may load only when the client starts or when the plugin is
+enabled. After configuring it:
 
-1. Exit Claude Code (Ctrl+C)
-2. Relaunch Claude Code
+1. Exit or reload the MCP client
+2. Relaunch it or enable the TradingView plugin
 3. The tradingview MCP server should connect automatically
 
 ## Step 5: Verify Connection
@@ -118,12 +128,14 @@ Then `tv status`, `tv quote`, `tv pine compile`, etc. work from anywhere.
 | Windows: "Access is denied" launching from `WindowsApps` | Use `tv_launch` (auto copy-fallback) or the manual copy snippet in Step 3 — never `icacls` on WindowsApps |
 | `ECONNREFUSED` | TradingView isn't running or port 9222 is blocked |
 | MCP server not showing in Claude Code | Check `~/.claude/.mcp.json` syntax, restart Claude Code |
+| TradingView plugin not available in Codex | Confirm the repository was installed as a local plugin and enable **TradingView** |
 | `tv` command not found | Run `npm link` from the project directory |
 | Tools return stale data | TradingView may still be loading — wait a few seconds |
 | Pine Editor tools fail | Open the Pine Editor panel first (`ui_open_panel pine-editor open`) |
 
 ## What to Read Next
 
-- `CLAUDE.md` — Decision tree for which tool to use when (auto-loaded by Claude Code)
+- `AGENTS.md` — Codex tool-selection and safety guidance
+- `CLAUDE.md` — Claude Code decision tree for which tool to use when
 - `README.md` — Full tool reference (78 MCP tools, 30 CLI commands)
 - `RESEARCH.md` — Research context and open questions

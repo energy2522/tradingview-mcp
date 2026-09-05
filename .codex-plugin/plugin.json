@@ -1,0 +1,38 @@
+{
+  "name": "tradingview-mcp",
+  "version": "1.0.0",
+  "description": "Local TradingView Desktop chart analysis and Pine Script workflows for Codex.",
+  "author": {
+    "name": "tradesdontlie",
+    "url": "https://github.com/tradesdontlie"
+  },
+  "homepage": "https://github.com/tradesdontlie/tradingview-mcp",
+  "repository": "https://github.com/tradesdontlie/tradingview-mcp",
+  "license": "MIT",
+  "keywords": [
+    "tradingview",
+    "charts",
+    "pine-script",
+    "technical-analysis"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "TradingView",
+    "shortDescription": "Analyze and work with local TradingView Desktop charts.",
+    "longDescription": "Connect Codex to a locally running TradingView Desktop instance for chart analysis, Pine Script development, replay practice, and chart workflow automation.",
+    "developerName": "tradesdontlie",
+    "category": "Finance",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/tradesdontlie/tradingview-mcp",
+    "defaultPrompt": [
+      "Check whether TradingView is connected and summarize my chart.",
+      "Help me develop and compile a Pine Script indicator.",
+      "Create a strategy performance report from the current chart."
+    ],
+    "brandColor": "#2962FF"
+  }
+}
