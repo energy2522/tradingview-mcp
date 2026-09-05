@@ -15,19 +15,20 @@ If not already clear, ask the user:
 - Overlay or separate pane?
 - Any specific inputs or visual elements?
 
-## Step 2: Pull Current Source (if modifying)
+## Step 2: Inspect or Create the Script
 
-If modifying an existing script:
-```bash
-node scripts/pine_pull.js
-```
-Then read `scripts/current.pine` to understand what's there.
+- `pine_list_scripts` lists saved scripts and `pine_open` opens one by name.
+- `pine_get_source` reads the script currently open in the Pine Editor.
+- `pine_new` creates a blank indicator or strategy when the user wants a new script.
 
-If creating new: start from scratch.
+Use `pine_analyze` for an offline static check before touching the live chart.
+Use `pine_check` when a server-side compile check is useful without opening the
+chart. These checks do not replace compiling in TradingView.
 
 ## Step 3: Write the Pine Script
 
-Write the complete script to `scripts/current.pine`. Every script MUST include:
+Draft the complete source, then use `pine_set_source` to put it into the Pine
+Editor. Every script MUST include:
 - `//@version=6` header
 - Proper `indicator()` or `strategy()` declaration
 - All user inputs with `input.*()` functions and groups
@@ -38,20 +39,20 @@ For strategies, include:
 - Position sizing via `strategy()` declaration
 - Default commission and slippage settings
 
-## Step 4: Push and Compile
+## Step 4: Compile
 
-```bash
-node scripts/pine_push.js
-```
-
-This injects the code into TradingView's Pine Editor, clicks compile, and reports any errors.
+Use `pine_smart_compile` as the normal compile path. It detects the appropriate
+button, compiles, checks errors, and reports study changes. Use `pine_compile`
+only when a direct compile action is specifically needed. Then call
+`pine_get_errors`; `pine_get_console` can provide compile messages and script
+log output when diagnostics are insufficient.
 
 ## Step 5: Fix Errors
 
 If errors are reported:
 1. Read the error messages (line number + description)
-2. Edit `scripts/current.pine` locally — fix the specific lines
-3. Push again: `node scripts/pine_push.js`
+2. Fix the specific lines and call `pine_set_source`
+3. Compile again with `pine_smart_compile`
 4. Repeat until 0 errors
 
 Common Pine Script errors:
@@ -70,9 +71,11 @@ After clean compilation:
 ## Step 7: Iterate
 
 If the user wants changes:
-1. Pull fresh: `node scripts/pine_pull.js` (in case TV modified anything)
-2. Edit locally
-3. Push + compile
+1. Pull fresh with `pine_get_source` (in case TradingView modified anything)
+2. Edit and apply with `pine_set_source`
+3. Compile with `pine_smart_compile`
 4. Screenshot to verify
 
-IMPORTANT: Always compile after every change. Never claim "done" without a clean compile.
+Use `pine_save` only when the user explicitly asks to save the script; it
+modifies their stored TradingView script. Always compile after every change.
+Never claim "done" without a clean compile.

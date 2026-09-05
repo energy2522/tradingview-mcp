@@ -1,6 +1,6 @@
 {
   "name": "tradingview-mcp",
-  "version": "1.0.0",
+  "version": "1.0.0+codex.20260905160010",
   "description": "Local TradingView Desktop chart analysis and Pine Script workflows for Codex.",
   "author": {
     "name": "tradesdontlie",
