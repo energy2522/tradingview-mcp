@@ -1,10 +1,14 @@
 # TradingView MCP — Claude Instructions
 
-84 tools for reading and controlling a live TradingView Desktop chart via CDP (port 9222).
+87 tools for reading and controlling a live TradingView Desktop chart via CDP (port 9222).
 
 ## Decision Tree — Which Tool When
 
 ### "What's on my chart right now?"
+Use `chart_snapshot` for compact, read-only state, quote, study values, and
+OHLCV summary. Use the granular tools below only when you need additional
+control or fields.
+
 1. `chart_get_state` → symbol, timeframe, chart type, list of all indicators with entity IDs
 2. `data_get_study_values` → current numeric values from all visible indicators (RSI, MACD, BBands, EMAs, etc.)
 3. `quote_get` → real-time price, OHLC, volume for current symbol
@@ -25,13 +29,8 @@ Use `study_filter` parameter to target a specific indicator by name substring (e
 - `quote_get` → single latest price snapshot
 
 ### "Analyze my chart" (full report workflow)
-1. `quote_get` → current price
-2. `data_get_study_values` → all indicator readings
-3. `data_get_pine_lines` → key price levels from custom indicators
-4. `data_get_pine_labels` → labeled levels with context (e.g., "Settlement", "ASN O/U")
-5. `data_get_pine_tables` → session stats, analytics tables
-6. `data_get_ohlcv` with `summary: true` → price action summary
-7. `capture_screenshot` → visual confirmation
+1. `chart_analysis_context` → compact price, indicator, and Pine-drawing context
+2. `capture_screenshot` → visual confirmation
 
 ### "Change the chart"
 - `chart_set_symbol` → switch ticker (e.g., "AAPL", "ES1!", "NYMEX:CL1!")
@@ -78,7 +77,7 @@ Use `study_filter` parameter to target a specific indicator by name substring (e
 - `ui_click` → click buttons by aria-label, text, or data-name
 - `layout_switch` → load a saved layout by name
 - `ui_fullscreen` → toggle fullscreen
-- `capture_screenshot` → take a screenshot (regions: "full", "chart", "strategy_tester")
+- `capture_screenshot` → take a screenshot (regions: "full", "chart", "strategy_tester"); returns native image content for supported clients
 
 ### "TradingView isn't running"
 - `tv_launch` → auto-detect and launch TradingView with CDP on Mac/Win/Linux
@@ -108,7 +107,7 @@ These tools can return large payloads. Follow these rules to avoid context bloat
 | `data_get_pine_boxes` | ~1-2 KB per study (deduplicated zones) |
 | `data_get_ohlcv` (summary) | ~500 bytes |
 | `data_get_ohlcv` (100 bars) | ~8 KB |
-| `capture_screenshot` | ~300 bytes (returns file path, not image data) |
+| `capture_screenshot` | Native image content plus a file path (size depends on the chart) |
 
 ## Tool Conventions
 

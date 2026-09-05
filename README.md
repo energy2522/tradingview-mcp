@@ -65,6 +65,7 @@ Gives your AI assistant eyes and hands on your own chart:
 - **Manage alerts** — create, list, and delete price alerts
 - **Replay practice** — step through historical bars, practice entries/exits
 - **Screenshots** — capture chart state for AI visual analysis
+- **Codex-ready context** — compact, read-only chart and strategy contexts plus native screenshot images
 - **Multi-pane layouts** — set up 2x2, 3x1, etc. grids with different symbols per pane
 - **Monitor your chart** — stream JSONL from your locally running chart for local monitoring scripts
 - **CLI access** — every MCP tool is also a `tv` CLI command, pipe-friendly with JSON output
@@ -237,7 +238,19 @@ files contain the same core tool-selection guidance:
 | "Draw a level at 24500" | `draw_shape` (horizontal_line) |
 | "Take a screenshot" | `capture_screenshot` |
 
-## Tool Reference (78 MCP tools)
+## Tool Reference (87 MCP tools)
+
+### Codex-Ready Context
+
+| Tool | When to use | State changes |
+|------|-------------|---------------|
+| `chart_snapshot` | Quick orientation: chart state, latest quote, indicators, and OHLCV summary | None |
+| `chart_analysis_context` | Compact technical-analysis context, including Pine drawings | None |
+| `strategy_report_context` | Available strategy metrics, trades, and equity data without opening panels | None |
+
+`capture_screenshot` now returns native MCP image content for clients that
+support images, as well as its saved file path. Read `tradingview://guide` for
+the complete tool-selection and safety guide.
 
 ### Chart Reading
 
@@ -373,7 +386,7 @@ npm test
 Codex / Claude Code / MCP client  ←→  MCP Server (stdio)  ←→  CDP (port 9222)  ←→  TradingView Desktop (Electron)
 ```
 
-- **Transport**: MCP over stdio (84 tools) + CLI (`tv` command, 30 commands with 66 subcommands)
+- **Transport**: MCP over stdio (87 tools) + CLI (`tv` command, 30 commands with 66 subcommands)
 - **Connection**: Chrome DevTools Protocol on localhost:9222
 - **Streaming**: Poll-and-diff loop with deduplication, JSONL output to stdout
 - **No dependencies** beyond `@modelcontextprotocol/sdk` and `chrome-remote-interface`

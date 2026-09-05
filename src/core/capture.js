@@ -10,7 +10,7 @@ import { fileURLToPath } from 'url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const SCREENSHOT_DIR = join(dirname(dirname(__dirname)), 'screenshots');
 
-export async function captureScreenshot({ region, filename, method, waitForRender = false } = {}) {
+export async function captureScreenshot({ region, filename, method, waitForRender = false, includeImageData = false } = {}) {
   mkdirSync(SCREENSHOT_DIR, { recursive: true });
 
   if (waitForRender) await waitForChartRender();
@@ -64,11 +64,13 @@ export async function captureScreenshot({ region, filename, method, waitForRende
   if (clip) params.clip = clip;
 
   const { data } = await client.Page.captureScreenshot(params);
-  writeFileSync(filePath, Buffer.from(data, 'base64'));
+  const image = Buffer.from(data, 'base64');
+  writeFileSync(filePath, image);
 
   return {
     success: true, method: 'cdp', file_path: filePath, region,
     waited_for_render: !!waitForRender,
-    size_bytes: Buffer.from(data, 'base64').length,
+    size_bytes: image.length,
+    ...(includeImageData && { image_data: data, mime_type: 'image/png' }),
   };
 }
