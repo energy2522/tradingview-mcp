@@ -4,6 +4,20 @@ This repository exposes a local TradingView Desktop instance through MCP. It
 only works after TradingView is launched with Chrome DevTools Protocol enabled
 on port 9222. Begin an interactive session with `tv_health_check`.
 
+## Connection preflight
+
+This MCP reaches TradingView through the local CDP endpoint at
+`http://127.0.0.1:9222`. Before calling `tv_health_check` or any tool that
+uses CDP, ensure the current session can access that local network endpoint.
+
+- If local-network access is not available, request it and tell the user it is
+  needed only to query their local TradingView DevTools endpoint.
+- Do not diagnose TradingView as disconnected from a `fetch failed` result
+  until the endpoint has been retried after local-network access is available.
+- In status reports, distinguish local-network access being unavailable, an
+  unreachable CDP endpoint, a missing TradingView chart target, and an
+  unavailable chart API.
+
 ## Tool selection
 
 - For a chart overview, prefer `chart_snapshot`. Use
