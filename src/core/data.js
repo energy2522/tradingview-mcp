@@ -241,8 +241,8 @@ async function ensureStrategyTesterReady(maxWaitMs = 6000) {
   return { status, unhidden: unhidden || [] };
 }
 
-export async function getStrategyResults() {
-  const ready = await ensureStrategyTesterReady();
+export async function getStrategyResults({ prepare = true } = {}) {
+  const ready = prepare ? await ensureStrategyTesterReady() : { status: 'not_prepared', unhidden: [] };
   const results = await evaluate(`
     (function() {
       ${FIND_STRATEGY_JS}
@@ -292,9 +292,9 @@ export async function getStrategyResults() {
   };
 }
 
-export async function getTrades({ max_trades } = {}) {
+export async function getTrades({ max_trades, prepare = true } = {}) {
   const limit = Math.min(max_trades || 20, MAX_TRADES);
-  const ready = await ensureStrategyTesterReady();
+  const ready = prepare ? await ensureStrategyTesterReady() : { status: 'not_prepared', unhidden: [] };
   const trades = await evaluate(`
     (function() {
       ${FIND_STRATEGY_JS}
@@ -336,8 +336,8 @@ export async function getTrades({ max_trades } = {}) {
   };
 }
 
-export async function getEquity() {
-  const ready = await ensureStrategyTesterReady();
+export async function getEquity({ prepare = true } = {}) {
+  const ready = prepare ? await ensureStrategyTesterReady() : { status: 'not_prepared', unhidden: [] };
   const equity = await evaluate(`
     (function() {
       ${FIND_STRATEGY_JS}
